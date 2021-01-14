@@ -9,11 +9,11 @@ data class RecordingItem(
     @PrimaryKey(autoGenerate = true)
     val id: Long = 0L,
     @ColumnInfo(name = "name")
-    val name : String = "",
+    var name : String = "",
     @ColumnInfo(name = "filePath")
-    val filePath : String = "",
+    var filePath : String = "",
     @ColumnInfo(name = "length")
-    val length : Long = 0L,
+    var length : Long = 0L,
     @ColumnInfo(name = "time")
-    val time : Long = 0L
+    var time : Long = 0L
 )
