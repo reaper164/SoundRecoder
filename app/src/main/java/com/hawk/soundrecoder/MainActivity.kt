@@ -23,7 +23,7 @@ class MainActivity : AppCompatActivity() {
     fun isServiceRunning() : Boolean{
         val manager = getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
         for (service in manager.getRunningServices(Int.MAX_VALUE)) {
-            if("com.hawk.soundrecoder.Recoder.RecordService" == service.service.className){
+            if("com.hawk.soundrecoder.recoder.RecordService" == service.service.className){
                 return true
             }
         }

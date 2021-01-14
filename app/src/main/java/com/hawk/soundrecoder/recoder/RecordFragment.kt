@@ -1,4 +1,4 @@
-package com.hawk.soundrecoder.Recoder
+package com.hawk.soundrecoder.recoder
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment

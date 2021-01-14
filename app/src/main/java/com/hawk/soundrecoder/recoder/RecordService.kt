@@ -1,4 +1,4 @@
-package com.hawk.soundrecoder.Recoder
+package com.hawk.soundrecoder.recoder
 
 import android.app.Notification
 import android.app.PendingIntent
@@ -18,7 +18,6 @@ import kotlinx.coroutines.*
 import java.io.File
 import java.io.IOException
 import java.text.SimpleDateFormat
-import java.util.*
 
 class RecordService : Service() {
 

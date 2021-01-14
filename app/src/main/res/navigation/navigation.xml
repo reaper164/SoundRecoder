@@ -7,12 +7,12 @@
 
     <fragment
         android:id="@+id/recordFragment"
-        android:name="com.hawk.soundrecoder.Recoder.RecordFragment"
+        android:name="com.hawk.soundrecoder.recoder.RecordFragment"
         android:label="fragment_record"
         tools:layout="@layout/fragment_record" />
     <fragment
         android:id="@+id/listRecordsFragment"
-        android:name="com.hawk.soundrecoder.ListRecords.ListRecordsFragment"
+        android:name="com.hawk.soundrecoder.listRecords.ListRecordsFragment"
         android:label="fragment_list_records"
         tools:layout="@layout/fragment_list_records" />
 </navigation>

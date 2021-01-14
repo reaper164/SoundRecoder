@@ -1,4 +1,4 @@
-package com.hawk.soundrecoder.ListRecords
+package com.hawk.soundrecoder.listRecords
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
