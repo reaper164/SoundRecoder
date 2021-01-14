@@ -2,8 +2,10 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/recordFragment"
-        android:title="TODO" />
+        android:icon="@drawable/ic_mic_white_36dp"
+        android:title="Запись" />
     <item
         android:id="@+id/listRecordsFragment"
-        android:title="TODO" />
+        android:icon="@drawable/baseline_playlist_play_white_36"
+        android:title="Список" />
 </menu>
