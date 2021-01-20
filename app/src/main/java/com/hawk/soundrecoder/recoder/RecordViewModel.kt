@@ -13,50 +13,51 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.concurrent.TimeUnit
 
-class RecordViewModel(private val app: Application) : AndroidViewModel(app) {
+class RecordViewModel(private  val app: Application): AndroidViewModel(app) {
 
     private val TRIGGER_TIME = "TRIGGER_AT"
-    private val second : Long = 1_000L
+    private val second: Long = 1_000L
 
-    private var prefs = app.getSharedPreferences("com.hawk.soundrecoder", Context.MODE_PRIVATE)
+    private var prefs = app.getSharedPreferences("info.fandroid.voicerecorder", Context.MODE_PRIVATE)
 
     private val _elapsedTime = MutableLiveData<String>()
 
-    val elapsedTime : LiveData<String>
-    get() = _elapsedTime
+    val elapsedTime: LiveData<String>
+        get() = _elapsedTime
 
-    private lateinit var timer : CountDownTimer
+    private lateinit var timer: CountDownTimer
 
-    init{
+    init {
         createTimer()
     }
 
-
-
-    fun timeFormatter(time : Long) : String{
+    fun timeFormatter(time: Long): String {
         return String.format("%02d:%02d:%02d",
-        TimeUnit.MICROSECONDS.toHours(time)%60,
-            TimeUnit.MICROSECONDS.toMinutes(time)%60,
-            TimeUnit.MICROSECONDS.toSeconds(time)%60)
+            TimeUnit.MILLISECONDS.toHours(time)%60,
+            TimeUnit.MILLISECONDS.toMinutes(time)%60,
+            TimeUnit.MILLISECONDS.toSeconds(time)%60)
     }
 
-    fun stopTimer(){
-        timer.cancel()
+    fun stopTimer() {
+        if (this::timer.isInitialized) {
+            timer.cancel()
+        }
         resetTimer()
     }
 
-    fun startTimer(){
-        var triggerTime : Long = SystemClock.elapsedRealtime()
+    fun startTimer() {
+        val triggerTime = SystemClock.elapsedRealtime()
+
         viewModelScope.launch {
             saveTime(triggerTime)
             createTimer()
         }
     }
 
-    private fun createTimer(){
+    private fun createTimer() {
         viewModelScope.launch {
             val triggerTime = loadTime()
-            timer = object : CountDownTimer(triggerTime, second){
+            timer = object : CountDownTimer(triggerTime, second) {
                 override fun onTick(millisUntilFinished: Long) {
                     _elapsedTime.value = timeFormatter(SystemClock.elapsedRealtime() - triggerTime)
                 }
@@ -69,24 +70,19 @@ class RecordViewModel(private val app: Application) : AndroidViewModel(app) {
         }
     }
 
-    fun resetTimer(){
+    fun resetTimer() {
         _elapsedTime.value = timeFormatter(0)
         viewModelScope.launch { saveTime(0) }
     }
 
-    private suspend fun saveTime(triggerTime : Long){
-        withContext(Dispatchers.IO){
+    private suspend fun saveTime(triggerTime: Long) =
+        withContext(Dispatchers.IO) {
             prefs.edit().putLong(TRIGGER_TIME, triggerTime).apply()
         }
-    }
 
-    private suspend fun loadTime() : Long =
-        withContext(Dispatchers.IO){
+    private suspend fun loadTime(): Long =
+        withContext(Dispatchers.IO) {
             prefs.getLong(TRIGGER_TIME,0)
         }
-
-
-
-
 
 }

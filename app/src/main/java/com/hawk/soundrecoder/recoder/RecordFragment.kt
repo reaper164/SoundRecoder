@@ -6,6 +6,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
+import android.os.Environment
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -14,36 +15,33 @@ import android.view.WindowManager
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.hawk.soundrecoder.MainActivity
-import com.hawk.soundrecoder.R
-import com.hawk.soundrecoder.database.ReacordDatabaseDao
-import com.hawk.soundrecoder.database.RecordDatabase
-import com.hawk.soundrecoder.databinding.FragmentRecordBinding
-import java.io.File
 
+import com.hawk.soundrecoder.R
+import com.hawk.soundrecoder.database.RecordDatabase
+import com.hawk.soundrecoder.database.ReacordDatabaseDao
+import com.hawk.soundrecoder.databinding.FragmentRecordBinding
+import kotlinx.android.synthetic.main.fragment_record.*
+import java.io.File
+import java.util.jar.Manifest
 
 class RecordFragment : Fragment() {
 
     private lateinit var viewModel: RecordViewModel
     private lateinit var mainActivity: MainActivity
-    private var count : Int? = null
-    private var database : ReacordDatabaseDao? = null
-    private var MY_PERMISSIONS_RECORD_AUDIO = 123
-    private lateinit var playButton : FloatingActionButton
+    private var database: ReacordDatabaseDao? = null
+    private val MY_PERMISSIONS_RECORD_AUDIO = 123
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
-        playButton = mainActivity.findViewById(R.id.playButton)
-
-        var binding = DataBindingUtil.inflate<FragmentRecordBinding>(
-                inflater,
-                R.layout.fragment_record,
-                container, false
+        val binding = DataBindingUtil.inflate<FragmentRecordBinding>(
+            inflater,
+            R.layout.fragment_record,
+            container, false
         )
 
         database = context?.let { RecordDatabase.getInstance(it).recordDatabaseDao }
@@ -63,9 +61,9 @@ class RecordFragment : Fragment() {
 
         binding.playButton.setOnClickListener {
             if (ContextCompat.checkSelfPermission(requireContext(),
-                            android.Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
+                    android.Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
                 requestPermissions(
-                        arrayOf(android.Manifest.permission.RECORD_AUDIO), MY_PERMISSIONS_RECORD_AUDIO)
+                    arrayOf(android.Manifest.permission.RECORD_AUDIO), MY_PERMISSIONS_RECORD_AUDIO)
             } else {
                 if (mainActivity.isServiceRunning()) {
                     onRecord(false)
@@ -78,8 +76,8 @@ class RecordFragment : Fragment() {
         }
 
         createChannel(
-                getString(R.string.notification_channel_id),
-                getString(R.string.notification_channel_name)
+            getString(R.string.notification_channel_id),
+            getString(R.string.notification_channel_name)
         )
 
         return binding.root
@@ -108,9 +106,9 @@ class RecordFragment : Fragment() {
     }
 
     override fun onRequestPermissionsResult(
-            requestCode: Int,
-            permissions: Array<out String>,
-            grantResults: IntArray
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
     ) {
         when(requestCode) {
             MY_PERMISSIONS_RECORD_AUDIO -> {
@@ -119,9 +117,9 @@ class RecordFragment : Fragment() {
                     viewModel.startTimer()
                 } else {
                     Toast.makeText(
-                            activity,
-                            getString(R.string.toast_recording_permissions),
-                            Toast.LENGTH_SHORT
+                        activity,
+                        getString(R.string.toast_recording_permissions),
+                        Toast.LENGTH_SHORT
                     ).show()
                 }
                 return
@@ -132,16 +130,16 @@ class RecordFragment : Fragment() {
     private fun createChannel(channelId: String, channelName: String) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val notificationChannel = NotificationChannel(
-                    channelId,
-                    channelName,
-                    NotificationManager.IMPORTANCE_DEFAULT
+                channelId,
+                channelName,
+                NotificationManager.IMPORTANCE_DEFAULT
             )
-                    .apply {
-                        setShowBadge(false)
-                        setSound(null, null)
-                    }
+                .apply {
+                    setShowBadge(false)
+                    setSound(null, null)
+                }
             val notificationManager = requireActivity().getSystemService(
-                    NotificationManager::class.java
+                NotificationManager::class.java
             )
             notificationManager.createNotificationChannel(notificationChannel)
         }
