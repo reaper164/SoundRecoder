@@ -47,6 +47,8 @@ dependencies {
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.navigation:navigation-fragment-ktx:2.2.2'
     implementation 'androidx.navigation:navigation-ui-ktx:2.2.2'
+    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.2.0'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0'
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
@@ -67,4 +69,10 @@ dependencies {
 
     //DataBinding
     kapt 'com.android.databinding:compiler:3.6.0-rc01'
+
+    //implementation 'com.google.android.exoplayer:exoplayer-core:2.12.3'
+    //implementation 'com.google.android.exoplayer:exoplayer-ui:2.12.3'
+    //Exo player
+    implementation 'com.google.android.exoplayer:exoplayer-core:2.9.0'
+    implementation 'com.google.android.exoplayer:exoplayer-ui:2.9.0'
 }
